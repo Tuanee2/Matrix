@@ -8,75 +8,166 @@
 #ifndef Matrix_hpp
 #define Matrix_hpp
 
-#define Matrix_Version "0.0.1"  // sửa 1/3/2024
+#define Matrix_Version "0.0.4"  // Phiên bản của class Matrix, cập nhật lần cuối 10/10/2024
 
 #include <iostream>
 #include <stdio.h>
 #include <vector>
 
+/// Lớp Matrix dùng để biểu diễn và xử lý các ma trận cơ bản.
 class Matrix {
 private:
-    std::vector<std::vector<double>> data;
-    size_t rows;
-    size_t cols;
+    std::vector<std::vector<double>> data;  // Lưu trữ dữ liệu của ma trận dưới dạng mảng 2 chiều.
+    size_t rows;  // Số hàng của ma trận.
+    size_t cols;  // Số cột của ma trận.
+
 public:
+    /// Constructor: Tạo một ma trận với số hàng và số cột xác định.
+    /// @param rows: số lượng hàng của ma trận.
+    /// @param cols: số lượng cột của ma trận.
     Matrix(size_t rows, size_t cols);
-    size_t getRow(),
-           getCol();
+
+    /// Phương thức trả về số hàng của ma trận.
+    /// @return số hàng của ma trận.
+    size_t getRow();
+
+    /// Phương thức trả về số cột của ma trận.
+    /// @return số cột của ma trận.
+    size_t getCol();
     
-    // Khai báo tham số ma trận
-    void setValue(size_t row, size_t col, double value),
-         setMatrix(const double* arr, size_t arrSize),
-         setMatrix(const std::vector<double>& arr);
+    /// Đặt giá trị cho một phần tử trong ma trận.
+    /// @param row: vị trí hàng của phần tử.
+    /// @param col: vị trí cột của phần tử.
+    /// @param value: giá trị cần gán cho phần tử tại (row, col).
+    void setValue(size_t row, size_t col, double value);
+
+    /// Đặt toàn bộ giá trị cho ma trận từ một mảng 1 chiều kiểu double.
+    /// @param arr: con trỏ đến mảng 1 chiều kiểu double.
+    /// @param arrSize: kích thước của mảng.
+    void setMatrix(const double* arr, size_t arrSize);
+
+    /// Đặt toàn bộ giá trị cho ma trận từ một vector 1 chiều kiểu double.
+    /// @param arr: vector chứa các giá trị cần gán cho ma trận.
+    void setMatrix(const std::vector<double>& arr);
     
-    // Gán giá trị tham số 2 ma trận cùng kích thước
+    /// Gán giá trị của ma trận `other` cho ma trận hiện tại (hai ma trận phải cùng kích thước).
+    /// @param other: ma trận cần gán giá trị.
     void assign(const Matrix& other);
     
-    // lấy giá trị tham số ma trận 
+    /// Trả về giá trị của một phần tử trong ma trận tại vị trí (row, col).
+    /// @param row: hàng của phần tử cần lấy.
+    /// @param col: cột của phần tử cần lấy.
+    /// @return giá trị của phần tử tại (row, col).
     double getValue(size_t row, size_t col);
     
-    // tính định thức ma trận
-    Matrix subMatrix(size_t rowToRemove, size_t colToRemove) const; // lấy ra ma trận con với kích thước (rowToRemove x colToRemove)
+    /// Lấy ma trận con từ ma trận lớn hơn.
+    /// @param x: chỉ số bắt đầu từ hàng.
+    /// @param y: chỉ số bắt đầu từ cột.
+    /// @param row: số hàng của ma trận con.
+    /// @param col: số cột của ma trận con.
+    /// @return ma trận con có kích thước (row x col) bắt đầu từ vị trí (x, y).
+    Matrix getsubmatrix(int x, int y, size_t row, size_t col);
+    
+    /// Tạo ma trận con bằng cách loại bỏ hàng và cột cụ thể.
+    /// @param rowToRemove: hàng cần loại bỏ.
+    /// @param colToRemove: cột cần loại bỏ.
+    /// @return ma trận sau khi loại bỏ hàng và cột.
+    Matrix subMatrix(size_t rowToRemove, size_t colToRemove) const;
+
+    /// Tính định thức của ma trận.
+    /// @return định thức của ma trận.
     double determinant() const;
     
-    // tìm hạng của ma trận
+    /// Tìm hạng của ma trận (rank).
+    /// @return hạng của ma trận.
     size_t rank() const;
     
-    // Các toán tử ma trận
-    Matrix operator*(const Matrix& other) const, // nhân 2 ma trận
-           operator*(double scalar) const,       // nhân ma trận với 1 số
-           operator+(const Matrix& other) const, // cộng 2 ma trận
-           operator-(const Matrix& other) const; // trừ 2 ma trận
+    /// Toán tử nhân hai ma trận.
+    /// @param other: ma trận cần nhân.
+    /// @return ma trận kết quả sau khi nhân.
+    Matrix operator*(const Matrix& other) const;
+
+    /// Toán tử nhân ma trận với một số vô hướng (scalar).
+    /// @param scalar: số vô hướng cần nhân với ma trận.
+    /// @return ma trận sau khi nhân với số vô hướng.
+    Matrix operator*(double scalar) const;
+
+    /// Toán tử cộng hai ma trận.
+    /// @param other: ma trận cần cộng.
+    /// @return ma trận kết quả sau khi cộng.
+    Matrix operator+(const Matrix& other) const;
+
+    /// Toán tử trừ hai ma trận.
+    /// @param other: ma trận cần trừ.
+    /// @return ma trận kết quả sau khi trừ.
+    Matrix operator-(const Matrix& other) const;
+
+    /// Toán tử gán ma trận.
+    /// @param other: ma trận cần gán.
+    /// @return ma trận hiện tại sau khi gán.
     Matrix& operator=(const Matrix& other);
-    // Các phép biến đổi ma trận
-    Matrix transpose() const,  // phép chuyển vị ma trận
-           inverse() const,    // tính ma trận nghịch đảo
-           convertToTriangular(); // chuyển về tam giác để tính rank mà ko làm thay đổi giá trị ma trận
     
-    void swapRows(size_t row1, size_t row2), // đổi vị trí 2 hàng
-         swapCols(size_t col1, size_t col2); // đổi vị trí 2 cột
+    /// Phép chuyển vị ma trận.
+    /// @return ma trận chuyển vị của ma trận hiện tại.
+    Matrix transpose() const;
+
+    /// Phép nghịch đảo ma trận (nếu tồn tại).
+    /// @return ma trận nghịch đảo.
+    Matrix inverse() const;
+
+    /// Chuyển ma trận về dạng tam giác để tính rank.
+    /// @return ma trận dạng tam giác.
+    Matrix convertToTriangular();
     
-    // Các phép kiểm tra ma trận
-    bool isSingleElementMatrix() const; // kiểm tra xem ma trận có kích thước 1x1 hay ko
-    double getSingleElementValue() const; // chuyển thành kiểu double khi ma trận có kích thước 1x1
-    // Các ma trận đặc biệt
-    static Matrix identity(size_t size), // ma trận đơn vị cỡ (size x size)
-                  zeros(size_t rows, size_t cols); // ma trận 0 cỡ (rows x cols)
+    /// Đổi vị trí hai hàng trong ma trận.
+    /// @param row1: hàng đầu tiên.
+    /// @param row2: hàng thứ hai.
+    void swapRows(size_t row1, size_t row2);
+
+    /// Đổi vị trí hai cột trong ma trận.
+    /// @param col1: cột đầu tiên.
+    /// @param col2: cột thứ hai.
+    void swapCols(size_t col1, size_t col2);
     
-    // In ma trận
+    /// Kiểm tra xem ma trận có kích thước 1x1 hay không.
+    /// @return true nếu ma trận là ma trận 1x1, false nếu không.
+    bool isSingleElementMatrix() const;
+    
+    /// Trả về giá trị duy nhất của ma trận 1x1 dưới dạng kiểu `double`.
+    /// @return giá trị của ma trận nếu là 1x1.
+    double getSingleElementValue() const;
+    
+    /// Tạo ma trận đơn vị (identity matrix) có kích thước size x size.
+    /// @param size: kích thước của ma trận đơn vị.
+    /// @return ma trận đơn vị.
+    static Matrix identity(size_t size);
+
+    /// Tạo ma trận 0 với kích thước rows x cols.
+    /// @param rows: số hàng của ma trận.
+    /// @param cols: số cột của ma trận.
+    /// @return ma trận toàn 0.
+    static Matrix zeros(size_t rows, size_t cols);
+    
+    /// In ma trận ra console.
     void print() const;
 };
 
+/// Lớp MatrixArray dùng để lưu trữ và quản lý mảng các đối tượng ma trận.
 class MatrixArray {
 private:
-    std::vector<Matrix> matrices; // Sử dụng vector để lưu trữ một mảng các ma trận
+    std::vector<Matrix> matrices;  // Lưu trữ một mảng các đối tượng ma trận.
 
 public:
-    // Phương thức thêm ma trận vào mảng
+    /// Thêm một ma trận vào mảng.
+    /// @param mat: ma trận cần thêm.
     void addMatrix(const Matrix& mat);
-    // Phương thức lấy ma trận từ mảng
+
+    /// Trả về ma trận tại chỉ mục index trong mảng.
+    /// @param index: chỉ mục của ma trận cần lấy.
+    /// @return ma trận tại chỉ mục index.
     Matrix& getMatrix(size_t index);
-    // Phương thức in tất cả các ma trận trong mảng
+
+    /// In tất cả các ma trận trong mảng.
     void printAllMatrices() const;
 };
 
