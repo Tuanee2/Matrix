@@ -152,6 +152,56 @@ public:
     void print() const;
 };
 
+/// Lớp Matrix3 dùng để biểu diễn và xử lý các ma trận 3 chiều.
+class Matrix3 {
+private:
+    std::vector<std::vector<std::vector<double>>> data;  // Dữ liệu ma trận 3 chiều.
+    size_t depth;  // Số lớp (chiều sâu) của ma trận.
+    size_t rows;   // Số hàng của mỗi lớp.
+    size_t cols;   // Số cột của mỗi lớp.
+
+public:
+    /// Constructor: Tạo một ma trận 3D với số lớp, số hàng và số cột xác định.
+    Matrix3(size_t depth, size_t rows, size_t cols);
+
+    /// Phương thức trả về số lớp của ma trận.
+    size_t getDepth() const;
+
+    /// Phương thức trả về số hàng của ma trận.
+    size_t getRow() const;
+
+    /// Phương thức trả về số cột của ma trận.
+    size_t getCol() const;
+
+    /// Đặt giá trị cho một phần tử trong ma trận.
+    void setValue(size_t d, size_t r, size_t c, double value);
+
+    /// Lấy giá trị của phần tử tại (d, r, c).
+    double getValue(size_t d, size_t r, size_t c) const;
+
+    /// Gán giá trị cho toàn bộ ma trận từ vector 1 chiều.
+    void setMatrix(const std::vector<double>& arr);
+
+    /// Trả về một lớp (2D) từ ma trận 3D tại độ sâu `depthIndex`.
+    std::vector<std::vector<double>> getLayer(size_t depthIndex) const;
+
+    /// Toán tử cộng hai ma trận 3D.
+    Matrix3 operator+(const Matrix3& other) const;
+
+    /// Toán tử trừ hai ma trận 3D.
+    Matrix3 operator-(const Matrix3& other) const;
+
+    /// Toán tử nhân ma trận 3D với số vô hướng.
+    Matrix3 operator*(double scalar) const;
+
+    /// Phương thức in toàn bộ ma trận ra console.
+    void print() const;
+
+    /// Tạo ma trận 3D toàn 0.
+    static Matrix3 zeros(size_t depth, size_t rows, size_t cols);
+};
+
+
 /// Lớp MatrixArray dùng để lưu trữ và quản lý mảng các đối tượng ma trận.
 class MatrixArray {
 private:
