@@ -183,7 +183,7 @@ public:
     void setMatrix(const std::vector<double>& arr);
 
     /// Trả về một lớp (2D) từ ma trận 3D tại độ sâu `depthIndex`.
-    std::vector<std::vector<double>> getLayer(size_t depthIndex) const;
+    Matrix getLayer(size_t depthIndex) const;
 
     /// Toán tử cộng hai ma trận 3D.
     Matrix3 operator+(const Matrix3& other) const;
