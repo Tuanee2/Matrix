@@ -29,11 +29,11 @@ public:
 
     /// Phương thức trả về số hàng của ma trận.
     /// @return số hàng của ma trận.
-    size_t getRow();
+    size_t getRow() const;
 
     /// Phương thức trả về số cột của ma trận.
     /// @return số cột của ma trận.
-    size_t getCol();
+    size_t getCol() const;
     
     /// Đặt giá trị cho một phần tử trong ma trận.
     /// @param row: vị trí hàng của phần tử.
@@ -115,6 +115,10 @@ public:
     /// @return ma trận nghịch đảo.
     Matrix inverse() const;
 
+    /// @brief tính chuẩn của ma trận
+    /// @return trả về giá trị chuẩn ma trận kiểu double
+    double norm() const;
+
     /// Chuyển ma trận về dạng tam giác để tính rank.
     /// @return ma trận dạng tam giác.
     Matrix convertToTriangular();
@@ -147,6 +151,16 @@ public:
     /// @param cols: số cột của ma trận.
     /// @return ma trận toàn 0.
     static Matrix zeros(size_t rows, size_t cols);
+
+    /// @brief Giải phương trình Lyapunov (A^T * P + P * A = Q) bằng phương pháp lặp.
+    /// @details Phương trình Lyapunov là một trường hợp đặc biệt của phương trình Riccati.
+    /// Hàm này thực hiện lặp để tìm nghiệm P cho phương trình ma trận đại số.
+    /// Phương pháp sẽ dừng khi sai số giữa hai lần lặp liên tiếp nhỏ hơn giá trị epsilon.
+    /// @param A Ma trận hệ động A (kích thước n x n).
+    /// @param Q Ma trận trọng số Q (kích thước n x n), cần đối xứng và xác định dương.
+    /// @param epsilon Sai số nhỏ nhất để kiểm tra hội tụ (ví dụ: 1e-6).
+    /// @return Ma trận P (kích thước n x n) là nghiệm của phương trình Lyapunov.
+    static Matrix solveLyapunov(const Matrix& A, const Matrix& Q, double epsilon);
     
     /// In ma trận ra console.
     void print() const;
